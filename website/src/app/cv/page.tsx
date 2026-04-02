@@ -6,9 +6,6 @@ import {
   getShellContent,
 } from "@/lib/sanity/queries";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export async function generateMetadata() {
   const [shellContent, cvPageContent] = await Promise.all([
     getShellContent(),

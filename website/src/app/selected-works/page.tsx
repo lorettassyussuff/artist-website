@@ -6,9 +6,6 @@ import {
 } from "@/lib/sanity/queries";
 import SelectedWorksHashFix from "./SelectedWorksHashFix";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export async function generateMetadata() {
   const [shellContent, selectedWorksContent] = await Promise.all([
     getShellContent(),

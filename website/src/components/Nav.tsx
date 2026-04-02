@@ -1,17 +1,43 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { siteMeta, standaloneNavLinks } from "@/content/site";
 
-export default function Nav() {
+type NavProps = {
+  siteTitle: string;
+  instagramUrl: string;
+  instagramLabel: string;
+  navLabels: {
+    about: string;
+    selectedWorks: string;
+    cv: string;
+    writings: string;
+    contact: string;
+  };
+};
+
+export default function Nav({
+  siteTitle,
+  instagramUrl,
+  instagramLabel,
+  navLabels,
+}: NavProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   function renderNavLinks() {
-    return standaloneNavLinks.map((link) => {
+    const navLinks = [
+      { href: "/about", label: navLabels.about },
+      { href: "/selected-works", label: navLabels.selectedWorks },
+      { href: "/cv", label: navLabels.cv },
+      { href: "/writings", label: navLabels.writings },
+      { href: "/contact", label: navLabels.contact },
+    ];
+
+    return navLinks.map((link) => {
       const isActive = pathname === link.href;
       return (
         <Link
@@ -30,18 +56,18 @@ export default function Nav() {
     <header className="site-header">
       <div className="site-header-inner">
         <Link href="/" className="site-title">
-          {siteMeta.name}
+          {siteTitle}
         </Link>
 
         <nav className="site-nav" aria-label="Primary">
           {renderNavLinks()}
 
           <a
-            href={siteMeta.instagram}
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link nav-link-icon"
-            aria-label="Instagram"
+            aria-label={instagramLabel}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,6 +109,9 @@ export default function Nav() {
           <Dialog.Portal>
             <Dialog.Overlay className="mobile-nav-overlay" />
             <Dialog.Content className="mobile-nav-panel">
+              <VisuallyHidden asChild>
+                <Dialog.Title>Navigation</Dialog.Title>
+              </VisuallyHidden>
               <div className="mobile-nav-header">
                 <Dialog.Close asChild>
                   <button
@@ -99,7 +128,7 @@ export default function Nav() {
               <nav className="mobile-nav-links" aria-label="Mobile primary">
                 {renderNavLinks()}
                 <a
-                  href={siteMeta.instagram}
+                  href={instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="nav-link mobile-nav-instagram"
@@ -128,7 +157,7 @@ export default function Nav() {
                         stroke="none"
                       />
                     </svg>
-                    Instagram
+                    {instagramLabel}
                   </span>
                 </a>
               </nav>

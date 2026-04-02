@@ -1,15 +1,16 @@
 import type { SanityImageSource } from "@sanity/image-url";
 
 export interface SanitySlug {
-  _type: "slug";
+  _type?: "slug";
   current: string;
 }
 
 export interface SanityImageAsset {
   _type: "image";
-  asset: {
+  asset?: {
     _ref: string;
     _type: "reference";
+    url?: string;
   };
   hotspot?: {
     x: number;
@@ -25,24 +26,26 @@ export interface SanityImageAsset {
   };
 }
 
-export interface SanityArtwork {
-  _id: string;
-  _type: "artwork";
-  title: string;
-  year: number;
-  medium?: string;
-  dimensions?: string;
-  exhibition?: string;
-  image?: SanityImageSource;
-  slug?: SanitySlug;
+export interface SanityFileAsset {
+  _type: "file";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    url?: string;
+  };
 }
 
-export interface SanityPage {
-  _id: string;
-  _type: "page";
-  title: string;
-  slug: SanitySlug;
-  body?: SanityBlock[];
+export interface SanityMarkDef {
+  _key: string;
+  _type: string;
+  href?: string;
+}
+
+export interface SanitySpan {
+  _key: string;
+  _type: "span";
+  text: string;
+  marks?: string[];
 }
 
 export interface SanityBlock {
@@ -50,18 +53,141 @@ export interface SanityBlock {
   _type: "block";
   style: string;
   children: SanitySpan[];
-  markDefs: SanityMarkDef[];
+  markDefs?: SanityMarkDef[];
 }
 
-export interface SanitySpan {
+export interface SanityHeroSlide {
   _key: string;
-  _type: "span";
-  text: string;
-  marks: string[];
+  _type: "heroSlide";
+  alt?: string;
+  caption?: string;
+  image?: SanityImageSource;
+  imageUrl?: string;
 }
 
-export interface SanityMarkDef {
+export interface SanityContactItem {
   _key: string;
-  _type: string;
-  href?: string;
+  _type: "contactItem";
+  label: string;
+  value: string;
+  href: string;
+  icon?: "email" | "instagram" | "none";
+}
+
+export interface SanityArtwork {
+  _id: string;
+  _type: "artwork";
+  title: string;
+  date?: number;
+  medium?: string;
+  dimensions?: string;
+  exhibition?: string;
+  credit?: string;
+  category: "painting" | "print" | "installation";
+  featured?: boolean;
+  sortOrder?: number;
+  image?: SanityImageSource;
+  imageUrl?: string;
+  slug?: SanitySlug;
+}
+
+export interface SanityCvEntry {
+  _key: string;
+  primary?: string;
+  secondary?: string;
+  meta?: string;
+  line?: string;
+}
+
+export interface SanityCvSection {
+  _id: string;
+  _type: "cvSection";
+  title: string;
+  sortOrder?: number;
+  entries: SanityCvEntry[];
+}
+
+export interface SanitySiteSettings {
+  _id: string;
+  _type: "siteSettings";
+  siteTitle: string;
+  tagline?: string;
+  description?: string;
+  email?: string;
+  instagramUrl?: string;
+  mailingListUrl?: string;
+  aboutNavLabel?: string;
+  selectedWorksNavLabel?: string;
+  cvNavLabel?: string;
+  writingsNavLabel?: string;
+  contactNavLabel?: string;
+  instagramLabel?: string;
+}
+
+export interface SanityHomePage {
+  _id: string;
+  _type: "homePage";
+  title?: string;
+  intro?: SanityBlock[];
+  heroImage?: SanityImageAsset;
+  heroImageUrl?: string;
+  heroImageAlt?: string;
+  heroCaption?: string;
+}
+
+export interface SanityAboutPage {
+  _id: string;
+  _type: "aboutPage";
+  title?: string;
+  sectionEyebrow?: string;
+  sectionTitle?: string;
+  body?: SanityBlock[];
+  portrait?: SanityImageAsset;
+  portraitUrl?: string;
+  portraitAlt?: string;
+  cvLinkLabel?: string;
+  instagramLinkLabel?: string;
+}
+
+export interface SanitySelectedWorksPage {
+  _id: string;
+  _type: "selectedWorksPage";
+  title?: string;
+  paintingsTitle?: string;
+  paintingsIntro?: string;
+  paintingsNavLabel?: string;
+  printsTitle?: string;
+  printsIntro?: string;
+  printsNavLabel?: string;
+}
+
+export interface SanityCvPage {
+  _id: string;
+  _type: "cvPage";
+  title?: string;
+  sectionEyebrow?: string;
+  sectionTitle?: string;
+}
+
+export interface SanityWritingsPage {
+  _id: string;
+  _type: "writingsPage";
+  title?: string;
+  sectionEyebrow?: string;
+  sectionTitle?: string;
+  intro?: SanityBlock[];
+  publicationTitle?: string;
+  publicationDescription?: string;
+  publicationPdf?: SanityFileAsset;
+  publicationPdfUrl?: string;
+}
+
+export interface SanityContactPage {
+  _id: string;
+  _type: "contactPage";
+  title?: string;
+  sectionEyebrow?: string;
+  sectionTitle?: string;
+  intro?: SanityBlock[];
+  items?: SanityContactItem[];
 }

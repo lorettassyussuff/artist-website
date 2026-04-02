@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import type { PrintCard } from "@/lib/sanity/queries";
 
 type PrintCarouselProps = {
-  prints: string[];
+  prints: PrintCard[];
 };
 
 export default function PrintCarousel({ prints }: PrintCarouselProps) {
@@ -75,8 +76,8 @@ export default function PrintCarousel({ prints }: PrintCarouselProps) {
           }`}
         >
           <Image
-            src={prints[currentIndex]}
-            alt={`Print ${currentIndex + 1} by Loretta Yussuff`}
+            src={prints[currentIndex].src}
+            alt={prints[currentIndex].title}
             width={1200}
             height={1600}
             className="print-image"
@@ -93,10 +94,16 @@ export default function PrintCarousel({ prints }: PrintCarouselProps) {
         </button>
       </div>
 
+      <div className="print-caption">
+        <p className="print-title">{prints[currentIndex].title}</p>
+        <p className="print-medium">{prints[currentIndex].medium}</p>
+        <p className="print-credit">{prints[currentIndex].credit}</p>
+      </div>
+
       <div className="print-carousel-dots" aria-label="Print navigation">
-        {prints.map((src, index) => (
+        {prints.map((print, index) => (
           <button
-            key={src}
+            key={print.src}
             type="button"
             className={`print-carousel-dot${
               index === currentIndex ? " active" : ""

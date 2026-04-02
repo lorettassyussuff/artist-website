@@ -1,18 +1,44 @@
 import Nav from "@/components/Nav";
 import { CVSection, SiteFooter } from "@/components/SiteSections";
+import {
+  getCvContent,
+  getCvPageContent,
+  getShellContent,
+} from "@/lib/sanity/queries";
 
-export const metadata = {
-  title: "CV | Loretta Yussuff",
-};
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export default function CVPage() {
+export async function generateMetadata() {
+  const [shellContent, cvPageContent] = await Promise.all([
+    getShellContent(),
+    getCvPageContent(),
+  ]);
+
+  return {
+    title: `${cvPageContent.title || "CV"} | ${shellContent.siteTitle}`,
+  };
+}
+
+export default async function CVPage() {
+  const [shellContent, cvPageContent, sections] = await Promise.all([
+    getShellContent(),
+    getCvPageContent(),
+    getCvContent(),
+  ]);
+
   return (
     <main className="site-shell">
-      <Nav />
+      <Nav
+        siteTitle={shellContent.siteTitle}
+        instagramUrl={shellContent.instagramUrl}
+        instagramLabel={shellContent.instagramLabel}
+        navLabels={shellContent.navLabels}
+      />
       <div className="page-frame">
-        <CVSection compact />
+        <CVSection compact sections={sections} {...cvPageContent} />
       </div>
-      <SiteFooter />
+      <SiteFooter siteName={shellContent.siteName} />
     </main>
   );
 }

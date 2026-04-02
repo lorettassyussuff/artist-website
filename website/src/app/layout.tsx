@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { getShellContent } from "@/lib/sanity/queries";
 import "./globals.css";
-import { siteMeta } from "@/content/site";
 
-export const metadata: Metadata = {
-  title: siteMeta.title,
-  description: siteMeta.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const shellContent = await getShellContent();
+
+  return {
+    title: shellContent.siteTitle,
+    description: shellContent.description,
+  };
+}
 
 export default function RootLayout({
   children,

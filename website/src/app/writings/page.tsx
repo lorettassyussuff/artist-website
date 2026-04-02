@@ -1,18 +1,36 @@
 import Nav from "@/components/Nav";
 import { SiteFooter, WritingsSection } from "@/components/SiteSections";
+import { getShellContent, getWritingsContent } from "@/lib/sanity/queries";
 
-export const metadata = {
-  title: "Writings | Loretta Yussuff",
-};
+export async function generateMetadata() {
+  const [shellContent, writingsContent] = await Promise.all([
+    getShellContent(),
+    getWritingsContent(),
+  ]);
 
-export default function WritingsPage() {
+  return {
+    title: `${writingsContent.title || writingsContent.sectionEyebrow || "Writings"} | ${shellContent.siteTitle}`,
+  };
+}
+
+export default async function WritingsPage() {
+  const [shellContent, writingsContent] = await Promise.all([
+    getShellContent(),
+    getWritingsContent(),
+  ]);
+
   return (
     <main className="site-shell">
-      <Nav />
+      <Nav
+        siteTitle={shellContent.siteTitle}
+        instagramUrl={shellContent.instagramUrl}
+        instagramLabel={shellContent.instagramLabel}
+        navLabels={shellContent.navLabels}
+      />
       <div className="page-frame">
-        <WritingsSection compact />
+        <WritingsSection compact {...writingsContent} />
       </div>
-      <SiteFooter />
+      <SiteFooter siteName={shellContent.siteName} />
     </main>
   );
 }

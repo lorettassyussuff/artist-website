@@ -37,7 +37,7 @@ const client = createClient({
 });
 
 function resolveAssetPath(relativePath) {
-  return path.resolve(repoRoot, relativePath.replace(/^website\//, ""));
+  return path.resolve(repoRoot, relativePath);
 }
 
 function slugify(value) {

@@ -16,7 +16,7 @@ http://localhost:3000/studio
 
 ## Environment
 
-Create `website/.env.local` with:
+Create `.env.local` with:
 
 ```env
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
@@ -35,5 +35,5 @@ pnpm seed
 
 Important:
 - the seed script still uploads from local files
-- the image/PDF source assets must exist in `website/public/assets/`
+- the image/PDF source assets must exist in `public/assets/`
 - if those files are removed, reseeding will fail until they are restored

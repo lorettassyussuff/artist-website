@@ -6,6 +6,8 @@ import {
 } from "@/lib/sanity/queries";
 import SelectedWorksHashFix from "./SelectedWorksHashFix";
 
+export const revalidate = 300;
+
 export async function generateMetadata() {
   const [shellContent, selectedWorksContent] = await Promise.all([
     getShellContent(),

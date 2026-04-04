@@ -369,7 +369,6 @@ img {
 }
 
 .hero-media:not(.hero-media-single):hover img,
-.portrait-frame:hover img,
 .installation-shot:hover img {
   transform: scale(1.02);
 }
@@ -584,9 +583,9 @@ img {
 .painting-image,
 .print-image {
   width: auto;
-  min-width: 30vw;
-  max-height: 100vh;
+  max-width: 100%;
   height: auto;
+  max-height: 80vh;
 }
 
 .painting-caption {

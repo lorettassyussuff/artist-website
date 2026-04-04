@@ -2,6 +2,8 @@ import Nav from "@/components/Nav";
 import { AboutSection, SiteFooter } from "@/components/SiteSections";
 import { getAboutContent, getShellContent } from "@/lib/sanity/queries";
 
+export const revalidate = 300;
+
 export async function generateMetadata() {
   const [shellContent, aboutContent] = await Promise.all([
     getShellContent(),

@@ -6,6 +6,8 @@ import {
   getShellContent,
 } from "@/lib/sanity/queries";
 
+export const revalidate = 300;
+
 export async function generateMetadata() {
   const [shellContent, cvPageContent] = await Promise.all([
     getShellContent(),

@@ -83,8 +83,11 @@ export function AboutSection({
   portraitSrc,
   portraitAlt,
 }: AboutSectionProps) {
-  const hasCopy = Boolean(header) || paragraphs.length > 0;
+  const hasHeader = Boolean(header);
+  const hasParagraphs = paragraphs.length > 0;
+  const hasCopy = hasHeader || hasParagraphs;
   const hasPortrait = Boolean(portraitSrc);
+  const shouldOffsetPortrait = hasHeader && hasParagraphs;
 
   return (
     <section id="about" className={`site-section ${compact ? "compact" : ""}`}>
@@ -97,19 +100,35 @@ export function AboutSection({
           className={`about-grid ${compact ? "centered-section-content" : ""}`}
         >
           {hasCopy ? (
-            <div className="about-copy-block">
-              {header ? <p className="about-kicker">{header}</p> : null}
-              {paragraphs.map((paragraph) => (
-                <p key={paragraph} className="body-copy">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <>
+              {hasHeader ? (
+                <div className="about-copy-block about-copy-block-lead">
+                  <p className="about-kicker">{header}</p>
+                </div>
+              ) : null}
+              {hasParagraphs ? (
+                <div
+                  className={`about-copy-block${
+                    hasHeader ? " about-copy-block-rest" : ""
+                  }`}
+                >
+                  {paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
+            </>
           ) : (
             <SectionFallback message="Content unavailable." />
           )}
           {hasPortrait ? (
-            <figure className="portrait-frame">
+            <figure
+              className={`portrait-frame${
+                shouldOffsetPortrait ? " portrait-frame-offset" : ""
+              }`}
+            >
               <Image
                 src={portraitSrc}
                 alt={portraitAlt}
@@ -419,11 +438,11 @@ export function ContactSection({
           className={`contact-ledger ${compact ? "centered-section-content" : ""}`}
         >
           {hasEmail ? (
-            <a href={`mailto:${email}`} className="contact-primary-card">
+            <div className="contact-primary-card">
               <span className="contact-kicker">Email</span>
               <strong>{email}</strong>
               <p>{emailDescription}</p>
-            </a>
+            </div>
           ) : (
             <SectionFallback message="Content unavailable." />
           )}

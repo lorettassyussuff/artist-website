@@ -54,6 +54,8 @@ export type PaintingCard = {
   title: string;
   medium: string;
   credit: string;
+  imageWidth: number;
+  imageHeight: number;
 };
 
 export type PrintCard = {
@@ -61,6 +63,8 @@ export type PrintCard = {
   title: string;
   medium: string;
   credit: string;
+  imageWidth: number;
+  imageHeight: number;
 };
 
 export type SelectedWorksContent = {
@@ -216,7 +220,9 @@ const artworksQuery = `*[_type == "artwork"] | order(sortOrder asc, date desc){
   credit,
   featured,
   sortOrder,
-  "imageUrl": image.asset->url
+  "imageUrl": image.asset->url,
+  "imageWidth": image.asset->metadata.dimensions.width,
+  "imageHeight": image.asset->metadata.dimensions.height
 }`;
 
 const cvSectionsQuery = `*[_type == "cvSection"] | order(sortOrder asc){
@@ -282,6 +288,24 @@ function findContactItem(
   return (
     items?.find((item) => item.label.toLowerCase() === label.toLowerCase()) ??
     items?.find((item) => item.icon === icon)
+  );
+}
+
+function logSelectedWorksAspectRatios(artworks: SanityArtwork[]) {
+  if (process.env.NODE_ENV === "production" || artworks.length === 0) {
+    return;
+  }
+
+  console.table(
+    artworks
+      .filter((artwork) => artwork.imageUrl && artwork.imageWidth && artwork.imageHeight)
+      .map((artwork) => ({
+        category: artwork.category,
+        title: combineTitle(artwork),
+        width: artwork.imageWidth,
+        height: artwork.imageHeight,
+        aspectRatio: Number((artwork.imageWidth! / artwork.imageHeight!).toFixed(3)),
+      })),
   );
 }
 
@@ -355,6 +379,8 @@ export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
   ]);
   const artworkList = artworks ?? [];
 
+  logSelectedWorksAspectRatios(artworkList);
+
   return {
     title: page?.title ?? "",
     paintingsTitle: page?.paintingsTitle ?? "",
@@ -374,6 +400,8 @@ export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
         title: combineTitle(artwork),
         medium: combineMedium(artwork),
         credit: artwork.credit || "",
+        imageWidth: artwork.imageWidth || 1920,
+        imageHeight: artwork.imageHeight || 1080,
       })),
     prints: artworkList
       .filter((artwork) => artwork.category === "print" && artwork.imageUrl)
@@ -382,6 +410,8 @@ export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
         title: combineTitle(artwork),
         medium: combineMedium(artwork),
         credit: artwork.credit || "",
+        imageWidth: artwork.imageWidth || 1200,
+        imageHeight: artwork.imageHeight || 1600,
       })),
   };
 }

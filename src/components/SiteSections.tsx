@@ -1,6 +1,5 @@
 import Image from "next/image";
-import BookReader from "@/components/BookReader";
-import PrintCarousel from "@/components/PrintCarousel";
+import WritingsReader from "@/components/WritingsReader";
 import type {
   AboutContent,
   ContactContent,
@@ -180,23 +179,55 @@ export function SelectedWorksSection({
 
         <div className="paintings-stack">
           {hasPaintings ? (
-            paintings.map((painting, index) => (
-              <figure key={painting.src} className="painting-card">
-                <Image
-                  src={painting.src}
-                  alt={painting.title}
-                  width={1920}
-                  height={1080}
-                  className="painting-image"
-                  priority={index === 0}
-                />
-                <figcaption className="painting-caption">
-                  <p className="painting-title">{painting.title}</p>
-                  <p className="painting-medium">{painting.medium}</p>
-                  <p className="painting-credit">{painting.credit}</p>
-                </figcaption>
-              </figure>
-            ))
+            paintings.map((painting, index) => {
+              const aspectRatio = painting.imageWidth / painting.imageHeight;
+              const orientationClass =
+                aspectRatio < 0.65
+                  ? "very-portrait"
+                  : aspectRatio < 0.95
+                    ? "portrait"
+                    : aspectRatio <= 1.08
+                      ? "balanced"
+                      : aspectRatio <= 1.45
+                        ? "landscape"
+                        : "very-landscape";
+              const imageSizes =
+                orientationClass === "very-portrait"
+                  ? "(max-width: 720px) 92vw, (max-width: 1512px) 24vw, 20vw"
+                  : orientationClass === "portrait"
+                    ? "(max-width: 720px) 92vw, (max-width: 1512px) 28vw, 24vw"
+                    : orientationClass === "balanced"
+                      ? "(max-width: 720px) 92vw, 30vw"
+                      : orientationClass === "landscape"
+                        ? "(max-width: 720px) 92vw, (max-width: 1512px) 48vw, 42vw"
+                        : "(max-width: 720px) 92vw, (max-width: 1512px) 68vw, 56vw";
+
+              return (
+                <figure
+                  key={painting.src}
+                  className={`painting-card painting-card-${orientationClass}`}
+                >
+                  <div
+                    className={`painting-frame painting-frame-${orientationClass}`}
+                  >
+                    <Image
+                      src={painting.src}
+                      alt={painting.title}
+                      width={painting.imageWidth}
+                      height={painting.imageHeight}
+                      className="painting-image"
+                      sizes={imageSizes}
+                      priority={index === 0}
+                    />
+                  </div>
+                  <figcaption className="painting-caption">
+                    <p className="painting-title">{painting.title}</p>
+                    <p className="painting-medium">{painting.medium}</p>
+                    <p className="painting-credit">{painting.credit}</p>
+                  </figcaption>
+                </figure>
+              );
+            })
           ) : (
             <SectionFallback message="Content unavailable." />
           )}
@@ -211,7 +242,25 @@ export function SelectedWorksSection({
 
       {hasPrints ? (
         <div className="prints-block">
-          <PrintCarousel prints={prints} />
+          <div className="prints-stack">
+            {prints.map((print) => (
+              <figure key={print.src} className="print-card">
+                <Image
+                  src={print.src}
+                  alt={print.title}
+                  width={print.imageWidth}
+                  height={print.imageHeight}
+                  className="print-image"
+                  sizes="(max-width: 720px) 88vw, 40vw"
+                />
+                <figcaption className="print-caption">
+                  <p className="print-title">{print.title}</p>
+                  <p className="print-medium">{print.medium}</p>
+                  <p className="print-credit">{print.credit}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       ) : null}
     </section>
@@ -326,7 +375,11 @@ export function WritingsSection({
               {publicationDescription ? <p>{publicationDescription}</p> : null}
             </div>
             {hasReader ? (
-              <BookReader pdfUrl={pdfUrl} title={publicationTitle} />
+              <WritingsReader
+                key={pdfUrl}
+                pdfUrl={pdfUrl}
+                title={publicationTitle}
+              />
             ) : (
               <SectionFallback message="Content unavailable." />
             )}
@@ -375,7 +428,7 @@ export function ContactSection({
           ) : (
             <SectionFallback message="Content unavailable." />
           )}
-          {(hasMailingList || hasInstagram) ? (
+          {hasMailingList || hasInstagram ? (
             <div className="contact-secondary-list">
               {hasMailingList ? (
                 <a href={mailingListHref} className="contact-secondary-row">

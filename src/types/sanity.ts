@@ -88,6 +88,8 @@ export interface SanityArtwork {
   sortOrder?: number;
   image?: SanityImageSource;
   imageUrl?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   slug?: SanitySlug;
 }
 

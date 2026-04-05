@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
   background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 a {
@@ -557,7 +559,7 @@ img {
 .paintings-stack {
   grid-column: 1 / -1;
   display: grid;
-  gap: 88px;
+  gap: 12vh;
   justify-items: center;
 }
 
@@ -570,6 +572,65 @@ img {
 }
 
 .painting-card {
+  --painting-card-width: 40vw;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+}
+
+.painting-card-very-portrait {
+  --painting-card-width: 23vw;
+  --painting-image-max-height: min(78vh, 980px);
+}
+
+.painting-card-landscape {
+  --painting-card-width: 42vw;
+  --painting-image-max-height: min(72vh, 720px);
+}
+
+.painting-card-portrait {
+  --painting-card-width: 33vw;
+  --painting-image-max-height: min(76vh, 940px);
+}
+
+.painting-card-balanced {
+  --painting-card-width: 36vw;
+  --painting-image-max-height: min(72vh, 900px);
+}
+
+.painting-card-very-landscape {
+  --painting-card-width: 66vw;
+  --painting-image-max-height: min(72vh, 720px);
+}
+
+.painting-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
+.painting-image {
+  display: block;
+  width: var(--painting-card-width);
+  max-width: 92vw;
+  height: auto;
+  max-height: var(--painting-image-max-height);
+}
+
+.print-image {
+  width: auto;
+  max-width: 40vw;
+  height: auto;
+  max-height: 70vh;
+}
+
+.print-card {
   width: auto;
   margin: 0 auto;
   padding: 0;
@@ -580,16 +641,9 @@ img {
   align-items: center;
 }
 
-.painting-image,
-.print-image {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 80vh;
-}
-
 .painting-caption {
-  width: min(100%, 820px);
+  width: max-content;
+  max-width: 100%;
   margin-top: 14px;
   text-align: center;
 }
@@ -631,28 +685,10 @@ img {
   margin-top: 0;
 }
 
-.print-carousel-frame {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.print-carousel-card {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: min(100%, 46vw);
-  padding: 14px;
-  background: rgba(255, 250, 245, 0.82);
-  border: 1px solid var(--line);
-  margin: 0;
-  transition:
-    opacity 260ms ease,
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 260ms ease,
-    box-shadow 260ms ease;
+.prints-stack {
+  display: grid;
+  gap: 52px;
+  justify-items: center;
 }
 
 .print-caption {
@@ -680,79 +716,6 @@ img {
   color: var(--soft);
   font-size: 0.78rem;
   line-height: 1.45;
-}
-
-.print-carousel-card.is-transitioning {
-  opacity: 0;
-  filter: blur(1px);
-  box-shadow: 0 10px 24px rgba(34, 31, 27, 0.06);
-}
-
-.print-carousel-card.is-entering {
-  opacity: 0;
-  filter: blur(1px);
-}
-
-.print-carousel-card.is-next.is-transitioning {
-  transform: translateX(42px) scale(0.985);
-}
-
-.print-carousel-card.is-prev.is-transitioning {
-  transform: translateX(-42px) scale(0.985);
-}
-
-.print-carousel-card.is-next.is-entering {
-  transform: translateX(-32px) scale(0.99);
-}
-
-.print-carousel-card.is-prev.is-entering {
-  transform: translateX(32px) scale(0.99);
-}
-
-.print-carousel-button {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  background: rgba(255, 252, 247, 0.92);
-  color: var(--foreground);
-  font-size: 1rem;
-  cursor: pointer;
-  transition:
-    background 180ms ease,
-    border-color 180ms ease;
-}
-
-.print-carousel-button:hover {
-  background: #fff;
-  border-color: rgba(34, 31, 27, 0.24);
-}
-
-.print-carousel-button-left {
-  margin-right: 18px;
-}
-
-.print-carousel-button-right {
-  margin-left: 18px;
-}
-
-.print-carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.print-carousel-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(34, 31, 27, 0.18);
-  cursor: pointer;
-}
-
-.print-carousel-dot.active {
-  background: rgba(34, 31, 27, 0.68);
 }
 
 .cv-layout .section-intro,
@@ -858,7 +821,7 @@ img {
 }
 
 .writing-reader-compact {
-  width: min(100%, 61vw);
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -897,6 +860,7 @@ img {
 .book-reader {
   display: grid;
   gap: 0.75rem;
+  overflow: clip;
 }
 
 .book-reader-status {
@@ -910,158 +874,74 @@ img {
   text-transform: uppercase;
 }
 
-.book-reader-button {
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--line);
-  background: rgba(255, 252, 247, 0.9);
-  color: var(--foreground);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.book-reader-button:disabled {
-  cursor: default;
-  opacity: 0.45;
-}
-
 .book-reader-stage {
   display: grid;
   width: 100%;
   margin: 0;
-  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  grid-template-columns: 1fr;
   grid-template-areas:
-    ". status ."
-    "prev page next";
+    "status"
+    "page";
   justify-items: center;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-}
-
-.book-reader-stage.is-hidden {
-  display: none;
+  overflow: clip;
 }
 
 .book-reader-single-page {
   display: grid;
   grid-area: page;
+  position: relative;
   width: fit-content;
   justify-items: center;
   justify-self: center;
+  overflow: hidden;
+  contain: layout paint;
 }
 
-.book-reader-button-prev {
-  grid-area: prev;
-  justify-self: end;
+.book-reader-document,
+.book-reader-flipbook {
+  display: block;
 }
 
-.book-reader-button-next {
-  grid-area: next;
-  justify-self: start;
-}
-
-.book-reader-page-surface {
-  display: grid;
-  place-items: center;
-  position: relative;
-  width: fit-content;
-  max-width: min(100%, 77rem);
-  height: auto;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(34, 31, 27, 0.12);
-  box-shadow:
-    0 18px 32px rgba(34, 31, 27, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  transform-style: preserve-3d;
-}
-
-.book-reader-page-surface.is-loading {
+.book-reader-flipbook {
   overflow: hidden;
 }
 
-.book-reader-page-surface.is-loading canvas {
-  opacity: 0;
-}
-
-.book-reader-turn-snapshot {
-  position: absolute;
-  inset: 0.5rem;
-  z-index: 2;
-  width: calc(100% - 1rem);
-  height: calc(100% - 1rem);
-  object-fit: contain;
-  pointer-events: none;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transform: translateZ(0);
-  will-change: transform, opacity, filter;
-  transition:
-    opacity 640ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 640ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 640ms cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 10px 22px rgba(34, 31, 27, 0.08);
-}
-
-.book-reader-turn-snapshot.is-turning-next.is-transitioning {
-  transform-origin: left center;
-  transform: perspective(1600px) rotateY(-72deg) translateX(10px);
-  opacity: 0.16;
-  filter: blur(0.45px);
-}
-
-.book-reader-turn-snapshot.is-turning-prev.is-transitioning {
-  transform-origin: right center;
-  transform: perspective(1600px) rotateY(72deg) translateX(-10px);
-  opacity: 0.16;
-  filter: blur(0.45px);
-}
-
-.book-reader-page-surface::after {
-  content: "";
-  position: absolute;
-  inset: 0.5rem;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(243, 238, 228, 0) 0%,
-    rgba(243, 238, 228, 0.22) 50%,
-    rgba(243, 238, 228, 0) 100%
-  );
-  opacity: 0;
-  transition:
-    opacity 400ms ease,
-    transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.book-reader-page-surface.is-turning-next.is-transitioning::after {
-  opacity: 1;
-  transform: translateX(12px);
-}
-
-.book-reader-page-surface.is-turning-prev.is-transitioning::after {
-  opacity: 1;
-  transform: translateX(-12px);
-}
-
-.book-reader-viewer-surface {
-  padding: 0;
-  overflow: hidden;
-}
-
-.book-reader-viewer-shell {
-  background: rgba(255, 255, 255, 0.98);
+.book-reader-flip-page {
   display: grid;
   place-items: center;
+  background: transparent;
 }
 
-.book-reader-loading-shell {
-  width: 80%;
+.book-reader-flip-page-inner {
+  width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-reader-flip-page-inner {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.book-reader-flipbook {
+  margin: 0 auto;
+}
+
+.book-reader-flip-page .react-pdf__Page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-reader-flip-page .react-pdf__Page__canvas {
+  display: block;
+  margin: 0 auto;
 }
 
 .book-reader-overlay {
@@ -1073,7 +953,6 @@ img {
   color: var(--muted);
   background: rgba(243, 238, 228, 0.16);
   pointer-events: none;
-  transition: opacity 180ms ease;
 }
 
 .book-reader-loading-state {
@@ -1112,7 +991,7 @@ img {
 }
 
 .writings-grid.centered-section-content {
-  width: min(100%, 61vw);
+  width: min(100%, 50vw);
   margin: 0 auto;
   grid-template-columns: 1fr;
   gap: 22px;
@@ -1294,11 +1173,6 @@ img {
     flex-direction: column;
   }
 
-  .book-reader-page-surface {
-    max-width: min(100%, 48rem);
-    padding: 0.75rem;
-  }
-
   .writings-grid.centered-section-content {
     width: 100%;
   }
@@ -1370,9 +1244,7 @@ img {
     grid-template-columns: 1fr;
     grid-template-areas:
       "status"
-      "prev"
-      "page"
-      "next";
+      "page";
     justify-items: center;
   }
 
@@ -1384,30 +1256,31 @@ img {
     grid-area: page;
   }
 
-  .book-reader-page-surface {
-    max-width: min(100%, 92vw);
-    padding: 0.625rem;
-  }
-
-  .book-reader-button {
-    width: 100%;
-    max-width: 10rem;
-    justify-self: center;
-  }
-
-  .painting-card {
+  .painting-card,
+  .painting-card-very-portrait,
+  .painting-card-portrait,
+  .painting-card-balanced,
+  .painting-card-landscape,
+  .painting-card-very-landscape {
     width: 100%;
   }
 
-  .print-carousel-card {
+  .painting-card-very-portrait,
+  .painting-card-portrait,
+  .painting-card-balanced,
+  .painting-card-landscape,
+  .painting-card-very-landscape {
+    --painting-card-width: 88vw;
+    --painting-image-max-height: 84vh;
+  }
+
+  .print-card {
     width: 100%;
   }
 
-  .print-carousel-button-left {
-    margin-right: 10px;
-  }
-
-  .print-carousel-button-right {
-    margin-left: 10px;
+  .print-image {
+    width: 88vw;
+    max-width: 88vw;
+    max-height: 84vh;
   }
 }

@@ -1,3 +1,5 @@
+const assetRoot = "/Users/khalilrussell/Desktop/assets";
+
 const siteSettings = {
   _type: "siteSettings",
   siteTitle: "Loretta Yussuff",
@@ -31,8 +33,7 @@ const homePage = {
       ],
     },
   ],
-  heroImageAssetPath:
-    "public/assets/home/b6f7a640-70b3-435a-971b-b1f3ca2e2675.png",
+  heroImageAssetPath: `${assetRoot}/home/b6f7a640-70b3-435a-971b-b1f3ca2e2675.png`,
   heroImageAlt: "Psalm 2: Death Waiting (detail), 2025, Oil on canvas",
   heroCaption: "Psalm 2: Death Waiting (detail), 2025, Oil on canvas",
 };
@@ -75,7 +76,7 @@ const aboutPage = {
       ],
     },
   ],
-  portraitAssetPath: "public/assets/about/studio-portrait.jpg",
+  portraitAssetPath: `${assetRoot}/about/studio-portrait.jpg`,
   portraitAlt: "Loretta Yussuff in the studio in front of works in progress.",
   cvLinkLabel: "View CV",
   instagramLinkLabel: "Instagram",
@@ -121,8 +122,7 @@ const writingsPage = {
   publicationTitle: "The Crab",
   publicationDescription:
     "Writing sits alongside the studio practice as another way of approaching image, memory, and emotional register. Rather than functioning as explanation, it offers a parallel space for reflection and language.",
-  publicationPdfAssetPath:
-    "public/assets/writings/the-crab-official.pdf",
+  publicationPdfAssetPath: `${assetRoot}/writings/the-crab-official.pdf`,
 };
 
 const contactPage = {
@@ -179,7 +179,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 1,
-    imageAssetPath: "public/assets/paintings/painting-02.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-02.png`,
   },
   {
     _type: "artwork",
@@ -192,7 +192,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 2,
-    imageAssetPath: "public/assets/paintings/painting-01.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-01.png`,
   },
   {
     _type: "artwork",
@@ -205,7 +205,7 @@ const artworks = [
     credit: "© Loretta Yussuff. Photo: Point101",
     featured: true,
     sortOrder: 3,
-    imageAssetPath: "public/assets/paintings/painting-04.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-04.png`,
   },
   {
     _type: "artwork",
@@ -218,7 +218,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 4,
-    imageAssetPath: "public/assets/paintings/painting-03.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-03.png`,
   },
   {
     _type: "artwork",
@@ -231,7 +231,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 5,
-    imageAssetPath: "public/assets/paintings/painting-05.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-05.png`,
   },
   {
     _type: "artwork",
@@ -244,7 +244,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 6,
-    imageAssetPath: "public/assets/paintings/painting-06.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-06.png`,
   },
   {
     _type: "artwork",
@@ -257,7 +257,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 7,
-    imageAssetPath: "public/assets/paintings/painting-07.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-07.png`,
   },
   {
     _type: "artwork",
@@ -270,7 +270,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 8,
-    imageAssetPath: "public/assets/paintings/painting-08.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-08.png`,
   },
   {
     _type: "artwork",
@@ -283,7 +283,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: true,
     sortOrder: 9,
-    imageAssetPath: "public/assets/paintings/painting-09.png",
+    imageAssetPath: `${assetRoot}/paintings/painting-09.png`,
   },
   {
     _type: "artwork",
@@ -293,7 +293,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 101,
-    imageAssetPath: "public/assets/prints/print-01.jpg",
+    imageAssetPath: `${assetRoot}/prints/print-01.jpg`,
   },
   {
     _type: "artwork",
@@ -303,7 +303,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 102,
-    imageAssetPath: "public/assets/prints/print-02.jpg",
+    imageAssetPath: `${assetRoot}/prints/print-02.jpg`,
   },
   {
     _type: "artwork",
@@ -313,7 +313,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 103,
-    imageAssetPath: "public/assets/prints/print-03.png",
+    imageAssetPath: `${assetRoot}/prints/print-03.png`,
   },
   {
     _type: "artwork",
@@ -323,7 +323,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 201,
-    imageAssetPath: "public/assets/installation/installation-01.jpg",
+    imageAssetPath: `${assetRoot}/installation/installation-01.jpg`,
   },
   {
     _type: "artwork",
@@ -333,7 +333,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 202,
-    imageAssetPath: "public/assets/installation/installation-02.jpg",
+    imageAssetPath: `${assetRoot}/installation/installation-02.jpg`,
   },
   {
     _type: "artwork",
@@ -343,7 +343,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 203,
-    imageAssetPath: "public/assets/installation/installation-03.jpg",
+    imageAssetPath: `${assetRoot}/installation/installation-03.jpg`,
   },
   {
     _type: "artwork",
@@ -353,7 +353,7 @@ const artworks = [
     credit: "© Loretta Yussuff",
     featured: false,
     sortOrder: 204,
-    imageAssetPath: "public/assets/installation/installation-04.jpg",
+    imageAssetPath: `${assetRoot}/installation/installation-04.jpg`,
   },
 ];
 

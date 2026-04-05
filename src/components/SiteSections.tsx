@@ -358,10 +358,9 @@ export function WritingsSection({
           compact ? "single-column" : ""
         }`}
       >
-        <SectionIntro
-          eyebrow={compact ? undefined : sectionEyebrow}
-          title={compact ? undefined : sectionTitle}
-        />
+        {!compact ? (
+          <SectionIntro eyebrow={sectionEyebrow} title={sectionTitle} />
+        ) : null}
         <div
           className={`writings-grid ${compact ? "centered-section-content" : ""}`}
         >
@@ -431,10 +430,12 @@ export function ContactSection({
           {hasMailingList || hasInstagram ? (
             <div className="contact-secondary-list">
               {hasMailingList ? (
-                <a href={mailingListHref} className="contact-secondary-row">
+                <div className="contact-secondary-row">
+                  {/* <a href={mailingListHref} className="contact-secondary-row"> */}
                   <span className="contact-kicker">Mailing List</span>
                   <strong>{mailingListLabel}</strong>
-                </a>
+                  {/* </a> */}
+                </div>
               ) : null}
               {hasInstagram ? (
                 <a

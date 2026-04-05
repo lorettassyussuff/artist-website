@@ -370,6 +370,11 @@ img {
   gap: 28px;
 }
 
+.about-grid {
+  align-items: start;
+  row-gap: 18px;
+}
+
 .about-grid.centered-section-content {
   width: min(100%, 65vw);
 }
@@ -378,6 +383,16 @@ img {
   display: grid;
   gap: 18px;
   align-content: start;
+}
+
+.about-copy-block-lead {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.about-copy-block-rest {
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .about-kicker {
@@ -399,8 +414,14 @@ img {
 .portrait-frame {
   position: relative;
   min-height: 64vh;
+  align-self: start;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.4);
+}
+
+.portrait-frame-offset {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .works-section .section-intro {
@@ -863,10 +884,6 @@ img {
   color: var(--foreground);
   border: 1px solid var(--line);
   background: rgba(255, 252, 247, 0.72);
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    background 180ms ease;
 }
 
 .contact-primary-card {
@@ -913,19 +930,20 @@ img {
   line-height: 1.75;
 }
 
-.contact-primary-card:hover,
+.contact-secondary-row {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
 .contact-secondary-row:hover {
   color: var(--foreground);
   transform: translateY(-2px);
 }
 
-.contact-primary-card:hover .contact-kicker,
 .contact-secondary-row:hover .contact-kicker {
   color: var(--soft);
-}
-
-.contact-primary-card:hover p {
-  color: var(--muted);
 }
 
 .contact-kicker.icon-row {

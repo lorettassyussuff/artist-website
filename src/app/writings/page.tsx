@@ -11,7 +11,7 @@ export async function generateMetadata() {
   ]);
 
   return {
-    title: `${writingsContent.title || writingsContent.sectionEyebrow || "Writings"} | ${shellContent.siteTitle}`,
+    title: `${writingsContent.title || "Writings"} | ${shellContent.siteTitle}`,
   };
 }
 
@@ -30,7 +30,7 @@ export default async function WritingsPage() {
         navLabels={shellContent.navLabels}
       />
       <div className="page-frame">
-        <WritingsSection compact {...writingsContent} />
+        <WritingsSection {...writingsContent} />
       </div>
       <SiteFooter siteName={shellContent.siteName} />
     </main>

@@ -5,10 +5,9 @@ export const aboutPageType = defineType({
   title: "About Page",
   type: "document",
   fields: [
-    defineField({ name: "title", title: "Title", type: "string" }),
     defineField({
-      name: "sectionEyebrow",
-      title: "Section eyebrow",
+      name: "title",
+      title: "Title",
       type: "string",
     }),
     defineField({
@@ -25,11 +24,5 @@ export const aboutPageType = defineType({
     }),
     defineField({ name: "portrait", title: "Portrait", type: "image" }),
     defineField({ name: "portraitAlt", title: "Portrait alt", type: "string" }),
-    defineField({ name: "cvLinkLabel", title: "CV link label", type: "string" }),
-    defineField({
-      name: "instagramLinkLabel",
-      title: "Instagram link label",
-      type: "string",
-    }),
   ],
 });

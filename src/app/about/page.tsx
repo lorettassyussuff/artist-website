@@ -5,13 +5,10 @@ import { getAboutContent, getShellContent } from "@/lib/sanity/queries";
 export const revalidate = 300;
 
 export async function generateMetadata() {
-  const [shellContent, aboutContent] = await Promise.all([
-    getShellContent(),
-    getAboutContent(),
-  ]);
+  const shellContent = await getShellContent();
 
   return {
-    title: `${aboutContent.sectionEyebrow || "About"} | ${shellContent.siteTitle}`,
+    title: `About | ${shellContent.siteTitle}`,
   };
 }
 
@@ -30,7 +27,7 @@ export default async function AboutPage() {
         navLabels={shellContent.navLabels}
       />
       <div className="page-frame">
-        <AboutSection compact {...aboutContent} />
+        <AboutSection {...aboutContent} />
       </div>
       <SiteFooter siteName={shellContent.siteName} />
     </main>

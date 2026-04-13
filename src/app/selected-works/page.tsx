@@ -35,7 +35,7 @@ export default async function SelectedWorksPage() {
         navLabels={shellContent.navLabels}
       />
       <div className="page-frame">
-        <SelectedWorksSection compact {...selectedWorksContent} />
+        <SelectedWorksSection {...selectedWorksContent} />
       </div>
       <SiteFooter siteName={shellContent.siteName} />
     </main>

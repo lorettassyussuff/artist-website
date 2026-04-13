@@ -9,10 +9,6 @@ import type {
   WritingsContent,
 } from "@/lib/sanity/queries";
 
-type SectionProps = {
-  compact?: boolean;
-};
-
 function SectionFallback({ message }: { message: string }) {
   return <div className="section-fallback">{message}</div>;
 }
@@ -72,12 +68,9 @@ export function HeroSection({
   );
 }
 
-type AboutSectionProps = SectionProps & AboutContent;
+type AboutSectionProps = AboutContent;
 
 export function AboutSection({
-  compact = false,
-  sectionEyebrow,
-  sectionTitle,
   header,
   paragraphs,
   portraitSrc,
@@ -90,15 +83,9 @@ export function AboutSection({
   const shouldOffsetPortrait = hasHeader && hasParagraphs;
 
   return (
-    <section id="about" className={`site-section ${compact ? "compact" : ""}`}>
-      <div className={`two-column-section ${compact ? "single-column" : ""}`}>
-        <SectionIntro
-          eyebrow={compact ? undefined : sectionEyebrow}
-          title={compact ? undefined : sectionTitle}
-        />
-        <div
-          className={`about-grid ${compact ? "centered-section-content" : ""}`}
-        >
+    <section id="about" className="site-section">
+      <div className="two-column-section single-column">
+        <div className="about-grid centered-section-content">
           {hasCopy ? (
             <>
               {hasHeader ? (
@@ -145,10 +132,9 @@ export function AboutSection({
   );
 }
 
-type SelectedWorksSectionProps = SectionProps & SelectedWorksContent;
+type SelectedWorksSectionProps = SelectedWorksContent;
 
 export function SelectedWorksSection({
-  compact = false,
   paintingsTitle,
   paintingsIntro,
   paintingsNavLabel,
@@ -162,16 +148,9 @@ export function SelectedWorksSection({
   const hasPrints = prints.length > 0;
 
   return (
-    <section
-      id="selected-works"
-      className={`site-section works-section ${compact ? "compact" : ""}`}
-    >
+    <section id="selected-works" className="site-section works-section">
       <div className="works-primary">
-        <div
-          className={`works-header-shell ${
-            compact ? "centered-section-content" : ""
-          }`}
-        >
+        <div className="works-header-shell centered-section-content">
           <div className="works-header-copy">
             <SectionIntro title={paintingsTitle} text={paintingsIntro} />
           </div>
@@ -231,7 +210,7 @@ export function SelectedWorksSection({
                   >
                     <Image
                       src={painting.src}
-                      alt={painting.title}
+                      alt={painting.alt}
                       width={painting.imageWidth}
                       height={painting.imageHeight}
                       className="painting-image"
@@ -266,7 +245,7 @@ export function SelectedWorksSection({
               <figure key={print.src} className="print-card">
                 <Image
                   src={print.src}
-                  alt={print.title}
+                  alt={print.alt}
                   width={print.imageWidth}
                   height={print.imageHeight}
                   className="print-image"
@@ -286,32 +265,17 @@ export function SelectedWorksSection({
   );
 }
 
-type CvSectionProps = SectionProps & {
+type CvSectionProps = {
   sections: CvSectionContent[];
-} & {
-  title: string;
-  sectionEyebrow: string;
-  sectionTitle: string;
 };
 
 export function CVSection({
-  compact = false,
-  sectionEyebrow,
-  sectionTitle,
   sections,
 }: CvSectionProps) {
   return (
-    <section id="cv" className={`site-section ${compact ? "compact" : ""}`}>
-      <div
-        className={`two-column-section cv-layout ${compact ? "single-column" : ""}`}
-      >
-        <SectionIntro
-          eyebrow={compact ? undefined : sectionEyebrow}
-          title={compact ? undefined : sectionTitle}
-        />
-        <div
-          className={`cv-stack ${compact ? "centered-section-content" : ""}`}
-        >
+    <section id="cv" className="site-section">
+      <div className="two-column-section cv-layout single-column">
+        <div className="cv-stack centered-section-content">
           {sections.length > 0 ? (
             sections.map((section) => (
               <div key={section.title} className="cv-section-card">
@@ -355,12 +319,9 @@ export function CVSection({
   );
 }
 
-type WritingsSectionProps = SectionProps & WritingsContent;
+type WritingsSectionProps = WritingsContent;
 
 export function WritingsSection({
-  compact = false,
-  sectionEyebrow,
-  sectionTitle,
   publicationTitle,
   publicationDescription,
   pdfUrl,
@@ -368,29 +329,24 @@ export function WritingsSection({
   const hasReader = Boolean(pdfUrl && publicationTitle);
 
   return (
-    <section
-      id="writings"
-      className={`site-section ${compact ? "compact" : ""}`}
-    >
-      <div
-        className={`two-column-section writings-layout ${
-          compact ? "single-column" : ""
-        }`}
-      >
-        {!compact ? (
-          <SectionIntro eyebrow={sectionEyebrow} title={sectionTitle} />
-        ) : null}
-        <div
-          className={`writings-grid ${compact ? "centered-section-content" : ""}`}
-        >
-          <div
-            className={`writing-reader ${compact ? "writing-reader-compact" : ""}`}
-          >
-            <div
-              className={`section-intro ${compact ? "compact-section-intro" : ""}`}
-            >
+    <section id="writings" className="site-section">
+      <div className="two-column-section writings-layout single-column">
+        <div className="writings-grid centered-section-content">
+          <div className="writing-reader writing-reader-layout">
+            <div className="section-intro writing-section-intro">
               {publicationTitle ? <h2>{publicationTitle}</h2> : null}
               {publicationDescription ? <p>{publicationDescription}</p> : null}
+              {pdfUrl ? (
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="writing-download-link"
+                >
+                  Download PDF
+                </a>
+              ) : null}
             </div>
             {hasReader ? (
               <WritingsReader
@@ -408,12 +364,9 @@ export function WritingsSection({
   );
 }
 
-type ContactSectionProps = SectionProps & ContactContent;
+type ContactSectionProps = ContactContent;
 
 export function ContactSection({
-  compact = false,
-  sectionEyebrow,
-  sectionTitle,
   email,
   emailDescription,
   mailingListHref,
@@ -426,17 +379,9 @@ export function ContactSection({
   const hasInstagram = Boolean(instagramHref || instagramLabel);
 
   return (
-    <section
-      id="contact"
-      className={`site-section contact-section ${compact ? "compact" : ""}`}
-    >
-      <div className={`contact-panel ${compact ? "single-column" : ""}`}>
-        {!compact ? (
-          <SectionIntro eyebrow={sectionEyebrow} title={sectionTitle} />
-        ) : null}
-        <div
-          className={`contact-ledger ${compact ? "centered-section-content" : ""}`}
-        >
+    <section id="contact" className="site-section contact-section">
+      <div className="contact-panel single-column">
+        <div className="contact-ledger centered-section-content">
           {hasEmail ? (
             <div className="contact-primary-card">
               <span className="contact-kicker">Email</span>

@@ -144,13 +144,10 @@ async function buildSingletonDocs() {
     _id: "aboutPage",
     _type: seed.aboutPage._type,
     title: seed.aboutPage.title,
-    sectionEyebrow: seed.aboutPage.sectionEyebrow,
     sectionTitle: seed.aboutPage.sectionTitle,
     body: withKeys(seed.aboutPage.body),
     portrait: await uploadImage(seed.aboutPage.portraitAssetPath),
     portraitAlt: seed.aboutPage.portraitAlt,
-    cvLinkLabel: seed.aboutPage.cvLinkLabel,
-    instagramLinkLabel: seed.aboutPage.instagramLinkLabel,
   };
 
   const selectedWorksPageDoc = {
@@ -169,17 +166,13 @@ async function buildSingletonDocs() {
     _id: "cvPage",
     _type: seed.cvPage._type,
     title: seed.cvPage.title,
-    sectionEyebrow: seed.cvPage.sectionEyebrow,
-    sectionTitle: seed.cvPage.sectionTitle,
   };
 
   const writingsPageDoc = {
     _id: "writingsPage",
     _type: seed.writingsPage._type,
     title: seed.writingsPage.title,
-    sectionEyebrow: seed.writingsPage.sectionEyebrow,
     sectionTitle: seed.writingsPage.sectionTitle,
-    intro: withKeys(seed.writingsPage.intro),
     publicationTitle: seed.writingsPage.publicationTitle,
     publicationDescription: seed.writingsPage.publicationDescription,
     publicationPdf: await uploadFile(seed.writingsPage.publicationPdfAssetPath),
@@ -189,7 +182,6 @@ async function buildSingletonDocs() {
     _id: "contactPage",
     _type: seed.contactPage._type,
     title: seed.contactPage.title,
-    sectionEyebrow: seed.contactPage.sectionEyebrow,
     sectionTitle: seed.contactPage.sectionTitle,
     intro: withKeys(seed.contactPage.intro),
     items: seed.contactPage.items.map((item, index) => ({
@@ -215,14 +207,13 @@ async function buildArtworkDocs() {
       _id: `artwork-${artwork.slug.current}`,
       _type: artwork._type,
       title: artwork.title,
+      alt: artwork.alt,
       slug: artwork.slug,
       category: artwork.category,
       date: artwork.date,
       medium: artwork.medium,
       dimensions: artwork.dimensions,
-      exhibition: artwork.exhibition,
       credit: artwork.credit,
-      featured: artwork.featured,
       sortOrder: artwork.sortOrder,
       image: await uploadImage(artwork.imageAssetPath),
     })),

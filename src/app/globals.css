@@ -310,10 +310,6 @@ img {
 }
 
 .site-section {
-  padding: 64px 0 0;
-}
-
-.site-section.compact {
   padding-top: 48px;
 }
 
@@ -332,7 +328,7 @@ img {
   margin: 0 auto;
 }
 
-.compact-section-intro {
+.writing-section-intro {
   width: min(100%, 50);
   margin: 0 auto 32px;
 }
@@ -493,12 +489,12 @@ img {
   color: var(--header-foreground);
 }
 
-.compact-section-intro.section-intro {
+.writing-section-intro.section-intro {
   position: static;
-  margin-bottom: 32px;
+  margin-bottom: 0px;
 }
 
-.writing-reader-compact .compact-section-intro p {
+.writing-reader-layout .writing-section-intro p {
   margin-top: 18px;
   max-width: 50rem;
 }
@@ -712,7 +708,7 @@ img {
   gap: 22px;
 }
 
-.writing-reader-compact {
+.writing-reader-layout {
   width: 100%;
   margin: 0 auto;
 }
@@ -857,6 +853,23 @@ img {
   gap: 22px;
 }
 
+.writing-download-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  color: var(--soft);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+
+.writing-download-link:hover {
+  color: var(--header-foreground);
+}
+
 .contact-section {
   padding-bottom: 24px;
 }
@@ -988,6 +1001,19 @@ img {
     grid-template-columns: 1fr;
   }
 
+  .about-grid.centered-section-content {
+    width: min(calc(100% - 24px), 42rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .about-copy-block-lead,
+  .about-copy-block-rest,
+  .portrait-frame-offset {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
   .works-section {
     width: 100%;
   }
@@ -1047,15 +1073,20 @@ img {
   }
 
   .centered-section-content,
-  .compact-section-intro,
+  .writing-section-intro,
   .cv-stack,
-  .about-grid,
   .writings-grid,
-  .writing-reader-compact,
+  .writing-reader-layout,
   .contact-ledger {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .about-grid.centered-section-content {
+    width: min(calc(100% - 24px), 42rem);
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .site-header-inner {

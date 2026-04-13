@@ -1,5 +1,21 @@
 import { defineField, defineType } from "sanity";
 
+const artworkFields = [
+  defineField({ name: "title", title: "Title", type: "string" }),
+  defineField({ name: "date", title: "Date", type: "number" }),
+  defineField({ name: "medium", title: "Medium", type: "string" }),
+  defineField({ name: "dimensions", title: "Dimensions", type: "string" }),
+  defineField({ name: "credit", title: "Credit", type: "string" }),
+  defineField({ name: "image", title: "Image", type: "image" }),
+  defineField({
+    name: "alt",
+    title: "Alt text",
+    type: "string",
+    description: "Short image description for accessibility.",
+    validation: (rule) => rule.max(160),
+  }),
+];
+
 export const selectedWorksPageType = defineType({
   name: "selectedWorksPage",
   title: "Selected Works Page",
@@ -23,6 +39,18 @@ export const selectedWorksPageType = defineType({
       type: "string",
     }),
     defineField({
+      name: "paintings",
+      title: "Paintings",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          preview: { select: { title: "title", media: "image" } },
+          fields: artworkFields,
+        },
+      ],
+    }),
+    defineField({
       name: "printsTitle",
       title: "Prints title",
       type: "string",
@@ -37,6 +65,18 @@ export const selectedWorksPageType = defineType({
       name: "printsNavLabel",
       title: "Prints nav label",
       type: "string",
+    }),
+    defineField({
+      name: "prints",
+      title: "Prints",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          preview: { select: { title: "title", media: "image" } },
+          fields: artworkFields,
+        },
+      ],
     }),
   ],
 });

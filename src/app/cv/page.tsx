@@ -1,7 +1,6 @@
 import Nav from "@/components/Nav";
 import { CVSection, SiteFooter } from "@/components/SiteSections";
 import {
-  getCvContent,
   getCvPageContent,
   getShellContent,
 } from "@/lib/sanity/queries";
@@ -20,10 +19,9 @@ export async function generateMetadata() {
 }
 
 export default async function CVPage() {
-  const [shellContent, cvPageContent, sections] = await Promise.all([
+  const [shellContent, cvPageContent] = await Promise.all([
     getShellContent(),
     getCvPageContent(),
-    getCvContent(),
   ]);
 
   return (
@@ -35,7 +33,7 @@ export default async function CVPage() {
         navLabels={shellContent.navLabels}
       />
       <div className="page-frame">
-        <CVSection compact sections={sections} {...cvPageContent} />
+        <CVSection sections={cvPageContent.sections} />
       </div>
       <SiteFooter siteName={shellContent.siteName} />
     </main>

@@ -5,7 +5,11 @@ export const homePageType = defineType({
   title: "Home Page",
   type: "document",
   fields: [
-    defineField({ name: "title", title: "Title", type: "string" }),
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+    }),
     defineField({
       name: "intro",
       title: "Intro",

@@ -2,13 +2,12 @@ import { sanityClient } from "./client";
 import { cache } from "react";
 import type {
   SanityAboutPage,
-  SanityArtwork,
   SanityBlock,
   SanityContactPage,
   SanityContactItem,
   SanityCvPage,
-  SanityCvSection,
   SanityHomePage,
+  SanityInlineArtwork,
   SanitySelectedWorksPage,
   SanitySiteSettings,
   SanityWritingsPage,
@@ -37,21 +36,17 @@ export type HeroContent = {
 };
 
 export type AboutContent = {
-  sectionEyebrow: string;
   sectionTitle: string;
   header: string;
   paragraphs: string[];
   portraitSrc: string;
   portraitAlt: string;
-  cvLinkLabel: string;
-  cvLinkHref: string;
-  instagramLinkLabel: string;
-  instagramHref: string;
 };
 
 export type PaintingCard = {
   src: string;
   title: string;
+  alt: string;
   medium: string;
   credit: string;
   imageWidth: number;
@@ -61,6 +56,7 @@ export type PaintingCard = {
 export type PrintCard = {
   src: string;
   title: string;
+  alt: string;
   medium: string;
   credit: string;
   imageWidth: number;
@@ -93,13 +89,11 @@ export type CvSectionContent = {
 
 export type CvPageContent = {
   title: string;
-  sectionEyebrow: string;
-  sectionTitle: string;
+  sections: CvSectionContent[];
 };
 
 export type WritingsContent = {
   title: string;
-  sectionEyebrow: string;
   sectionTitle: string;
   publicationTitle: string;
   publicationDescription: string;
@@ -108,8 +102,6 @@ export type WritingsContent = {
 
 export type ContactContent = {
   title: string;
-  sectionEyebrow: string;
-  sectionTitle: string;
   email: string;
   emailDescription: string;
   mailingListHref: string;
@@ -138,7 +130,6 @@ const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 const homePageQuery = `*[_type == "homePage"][0]{
   _id,
   _type,
-  title,
   intro,
   heroImageAlt,
   heroCaption,
@@ -148,13 +139,9 @@ const homePageQuery = `*[_type == "homePage"][0]{
 const aboutPageQuery = `*[_type == "aboutPage"][0]{
   _id,
   _type,
-  title,
-  sectionEyebrow,
   sectionTitle,
   body,
   portraitAlt,
-  cvLinkLabel,
-  instagramLinkLabel,
   "portraitUrl": portrait.asset->url
 }`;
 
@@ -165,26 +152,57 @@ const selectedWorksPageQuery = `*[_type == "selectedWorksPage"][0]{
   paintingsTitle,
   paintingsIntro,
   paintingsNavLabel,
+  paintings[]{
+    _key,
+    title,
+    date,
+    medium,
+    dimensions,
+    credit,
+    alt,
+    "imageUrl": image.asset->url,
+    "imageWidth": image.asset->metadata.dimensions.width,
+    "imageHeight": image.asset->metadata.dimensions.height
+  },
   printsTitle,
   printsIntro,
-  printsNavLabel
+  printsNavLabel,
+  prints[]{
+    _key,
+    title,
+    date,
+    medium,
+    dimensions,
+    credit,
+    alt,
+    "imageUrl": image.asset->url,
+    "imageWidth": image.asset->metadata.dimensions.width,
+    "imageHeight": image.asset->metadata.dimensions.height
+  }
 }`;
 
 const cvPageQuery = `*[_type == "cvPage"][0]{
   _id,
   _type,
   title,
-  sectionEyebrow,
-  sectionTitle
+  sections[]{
+    _key,
+    title,
+    entries[]{
+      _key,
+      primary,
+      secondary,
+      meta,
+      line
+    }
+  }
 }`;
 
 const writingsPageQuery = `*[_type == "writingsPage"][0]{
   _id,
   _type,
   title,
-  sectionEyebrow,
   sectionTitle,
-  intro,
   publicationTitle,
   publicationDescription,
   "publicationPdfUrl": publicationPdf.asset->url
@@ -194,8 +212,6 @@ const contactPageQuery = `*[_type == "contactPage"][0]{
   _id,
   _type,
   title,
-  sectionEyebrow,
-  sectionTitle,
   intro,
   items[]{
     _key,
@@ -204,38 +220,6 @@ const contactPageQuery = `*[_type == "contactPage"][0]{
     value,
     href,
     icon
-  }
-}`;
-
-const artworksQuery = `*[_type == "artwork"] | order(sortOrder asc, date desc){
-  _id,
-  _type,
-  title,
-  slug,
-  category,
-  date,
-  medium,
-  dimensions,
-  exhibition,
-  credit,
-  featured,
-  sortOrder,
-  "imageUrl": image.asset->url,
-  "imageWidth": image.asset->metadata.dimensions.width,
-  "imageHeight": image.asset->metadata.dimensions.height
-}`;
-
-const cvSectionsQuery = `*[_type == "cvSection"] | order(sortOrder asc){
-  _id,
-  _type,
-  title,
-  sortOrder,
-  entries[]{
-    _key,
-    primary,
-    secondary,
-    meta,
-    line
   }
 }`;
 
@@ -271,12 +255,12 @@ function blocksToParagraphs(blocks?: SanityBlock[]) {
     .filter((paragraph): paragraph is string => Boolean(paragraph));
 }
 
-function combineMedium(artwork: SanityArtwork) {
+function combineMedium(artwork: SanityInlineArtwork) {
   const parts = [artwork.medium, artwork.dimensions].filter(Boolean);
   return parts.join(", ");
 }
 
-function combineTitle(artwork: SanityArtwork) {
+function combineTitle(artwork: SanityInlineArtwork) {
   return artwork.date ? `${artwork.title}, ${artwork.date}` : artwork.title;
 }
 
@@ -291,22 +275,24 @@ function findContactItem(
   );
 }
 
-function logSelectedWorksAspectRatios(artworks: SanityArtwork[]) {
-  if (process.env.NODE_ENV === "production" || artworks.length === 0) {
+function logSelectedWorksAspectRatios(paintings: SanityInlineArtwork[], prints: SanityInlineArtwork[]) {
+  if (process.env.NODE_ENV === "production") {
     return;
   }
 
-  console.table(
-    artworks
-      .filter((artwork) => artwork.imageUrl && artwork.imageWidth && artwork.imageHeight)
-      .map((artwork) => ({
-        category: artwork.category,
-        title: combineTitle(artwork),
-        width: artwork.imageWidth,
-        height: artwork.imageHeight,
-        aspectRatio: Number((artwork.imageWidth! / artwork.imageHeight!).toFixed(3)),
-      })),
-  );
+  const rows = [...paintings.map(a => ({ category: "painting", ...a })), ...prints.map(a => ({ category: "print", ...a }))]
+    .filter((a) => a.imageUrl && a.imageWidth && a.imageHeight)
+    .map((a) => ({
+      category: a.category,
+      title: combineTitle(a),
+      width: a.imageWidth,
+      height: a.imageHeight,
+      aspectRatio: Number((a.imageWidth! / a.imageHeight!).toFixed(3)),
+    }));
+
+  if (rows.length > 0) {
+    console.table(rows);
+  }
 }
 
 const getSiteSettings = cache(async function getSiteSettings() {
@@ -359,27 +345,20 @@ export async function getAboutContent(): Promise<AboutContent> {
   ]);
 
   return {
-    sectionEyebrow: aboutPage?.sectionEyebrow ?? "",
     sectionTitle: aboutPage?.sectionTitle ?? "",
     header: settings?.tagline ?? "",
     paragraphs: blocksToParagraphs(aboutPage?.body),
     portraitSrc: aboutPage?.portraitUrl ?? "",
     portraitAlt: aboutPage?.portraitAlt ?? "",
-    cvLinkLabel: aboutPage?.cvLinkLabel ?? "",
-    cvLinkHref: "/cv",
-    instagramLinkLabel: aboutPage?.instagramLinkLabel ?? "",
-    instagramHref: settings?.instagramUrl ?? "",
   };
 }
 
 export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
-  const [page, artworks] = await Promise.all([
-    fetchFromSanity<SanitySelectedWorksPage>(selectedWorksPageQuery),
-    fetchFromSanity<SanityArtwork[]>(artworksQuery),
-  ]);
-  const artworkList = artworks ?? [];
+  const page = await fetchFromSanity<SanitySelectedWorksPage>(selectedWorksPageQuery);
+  const paintings = page?.paintings ?? [];
+  const prints = page?.prints ?? [];
 
-  logSelectedWorksAspectRatios(artworkList);
+  logSelectedWorksAspectRatios(paintings, prints);
 
   return {
     title: page?.title ?? "",
@@ -389,25 +368,23 @@ export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
     printsTitle: page?.printsTitle ?? "",
     printsIntro: page?.printsIntro ?? "",
     printsNavLabel: page?.printsNavLabel ?? "",
-    paintings: artworkList
-      .filter(
-        (artwork) =>
-          artwork.category === "painting" &&
-          artwork.imageUrl,
-      )
+    paintings: paintings
+      .filter((artwork) => artwork.imageUrl)
       .map((artwork) => ({
         src: artwork.imageUrl as string,
-        title: combineTitle(artwork),
+        title: combineTitle(artwork) ?? "",
+        alt: artwork.alt || combineTitle(artwork) || "",
         medium: combineMedium(artwork),
         credit: artwork.credit || "",
         imageWidth: artwork.imageWidth || 1920,
         imageHeight: artwork.imageHeight || 1080,
       })),
-    prints: artworkList
-      .filter((artwork) => artwork.category === "print" && artwork.imageUrl)
+    prints: prints
+      .filter((artwork) => artwork.imageUrl)
       .map((artwork) => ({
         src: artwork.imageUrl as string,
-        title: combineTitle(artwork),
+        title: combineTitle(artwork) ?? "",
+        alt: artwork.alt || combineTitle(artwork) || "",
         medium: combineMedium(artwork),
         credit: artwork.credit || "",
         imageWidth: artwork.imageWidth || 1200,
@@ -416,11 +393,11 @@ export async function getSelectedWorksContent(): Promise<SelectedWorksContent> {
   };
 }
 
-export async function getCvContent(): Promise<CvSectionContent[]> {
-  const sections =
-    (await fetchFromSanity<SanityCvSection[]>(cvSectionsQuery)) ?? [];
+export async function getCvPageContent(): Promise<CvPageContent> {
+  const page = await fetchFromSanity<SanityCvPage>(cvPageQuery);
+  const rawSections = page?.sections ?? [];
 
-  return sections.map((section) => {
+  const sections = rawSections.map((section) => {
     const lineEntries = section.entries
       .map((entry) => entry.line?.trim())
       .filter((line): line is string => Boolean(line));
@@ -444,15 +421,10 @@ export async function getCvContent(): Promise<CvSectionContent[]> {
       })),
     };
   });
-}
-
-export async function getCvPageContent(): Promise<CvPageContent> {
-  const page = await fetchFromSanity<SanityCvPage>(cvPageQuery);
 
   return {
     title: page?.title ?? "",
-    sectionEyebrow: page?.sectionEyebrow ?? "",
-    sectionTitle: page?.sectionTitle ?? "",
+    sections,
   };
 }
 
@@ -462,7 +434,6 @@ export async function getWritingsContent(): Promise<WritingsContent> {
 
   return {
     title: writingsPage?.title ?? "",
-    sectionEyebrow: writingsPage?.sectionEyebrow ?? "",
     sectionTitle: writingsPage?.sectionTitle ?? "",
     publicationTitle: writingsPage?.publicationTitle ?? "",
     publicationDescription: writingsPage?.publicationDescription ?? "",
@@ -487,8 +458,6 @@ export async function getContactContent(): Promise<ContactContent> {
 
   return {
     title: contactPage?.title ?? "",
-    sectionEyebrow: contactPage?.sectionEyebrow ?? "",
-    sectionTitle: contactPage?.sectionTitle ?? "",
     email: emailItem?.value || settings?.email || "",
     emailDescription: introParagraphs[0] || "",
     mailingListHref: mailingListItem?.href || settings?.mailingListUrl || "",

@@ -11,7 +11,7 @@ export async function generateMetadata() {
   ]);
 
   return {
-    title: `${contactContent.title || contactContent.sectionEyebrow || "Contact"} | ${shellContent.siteTitle}`,
+    title: `${contactContent.title || "Contact"} | ${shellContent.siteTitle}`,
   };
 }
 
@@ -30,7 +30,7 @@ export default async function ContactPage() {
         navLabels={shellContent.navLabels}
       />
       <div className="page-frame">
-        <ContactSection compact {...contactContent} />
+        <ContactSection {...contactContent} />
       </div>
       <SiteFooter siteName={shellContent.siteName} />
     </main>

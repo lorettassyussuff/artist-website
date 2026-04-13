@@ -56,15 +56,6 @@ export interface SanityBlock {
   markDefs?: SanityMarkDef[];
 }
 
-export interface SanityHeroSlide {
-  _key: string;
-  _type: "heroSlide";
-  alt?: string;
-  caption?: string;
-  image?: SanityImageSource;
-  imageUrl?: string;
-}
-
 export interface SanityContactItem {
   _key: string;
   _type: "contactItem";
@@ -72,25 +63,6 @@ export interface SanityContactItem {
   value: string;
   href: string;
   icon?: "email" | "instagram" | "none";
-}
-
-export interface SanityArtwork {
-  _id: string;
-  _type: "artwork";
-  title: string;
-  date?: number;
-  medium?: string;
-  dimensions?: string;
-  exhibition?: string;
-  credit?: string;
-  category: "painting" | "print" | "installation";
-  featured?: boolean;
-  sortOrder?: number;
-  image?: SanityImageSource;
-  imageUrl?: string;
-  imageWidth?: number;
-  imageHeight?: number;
-  slug?: SanitySlug;
 }
 
 export interface SanityCvEntry {
@@ -101,11 +73,9 @@ export interface SanityCvEntry {
   line?: string;
 }
 
-export interface SanityCvSection {
-  _id: string;
-  _type: "cvSection";
+export interface SanityCvPageSection {
+  _key: string;
   title: string;
-  sortOrder?: number;
   entries: SanityCvEntry[];
 }
 
@@ -141,14 +111,24 @@ export interface SanityAboutPage {
   _id: string;
   _type: "aboutPage";
   title?: string;
-  sectionEyebrow?: string;
   sectionTitle?: string;
   body?: SanityBlock[];
   portrait?: SanityImageAsset;
   portraitUrl?: string;
   portraitAlt?: string;
-  cvLinkLabel?: string;
-  instagramLinkLabel?: string;
+}
+
+export interface SanityInlineArtwork {
+  _key: string;
+  title?: string;
+  date?: number;
+  medium?: string;
+  dimensions?: string;
+  credit?: string;
+  alt?: string;
+  imageUrl?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 export interface SanitySelectedWorksPage {
@@ -158,26 +138,25 @@ export interface SanitySelectedWorksPage {
   paintingsTitle?: string;
   paintingsIntro?: string;
   paintingsNavLabel?: string;
+  paintings?: SanityInlineArtwork[];
   printsTitle?: string;
   printsIntro?: string;
   printsNavLabel?: string;
+  prints?: SanityInlineArtwork[];
 }
 
 export interface SanityCvPage {
   _id: string;
   _type: "cvPage";
   title?: string;
-  sectionEyebrow?: string;
-  sectionTitle?: string;
+  sections?: SanityCvPageSection[];
 }
 
 export interface SanityWritingsPage {
   _id: string;
   _type: "writingsPage";
   title?: string;
-  sectionEyebrow?: string;
   sectionTitle?: string;
-  intro?: SanityBlock[];
   publicationTitle?: string;
   publicationDescription?: string;
   publicationPdf?: SanityFileAsset;
@@ -188,8 +167,6 @@ export interface SanityContactPage {
   _id: string;
   _type: "contactPage";
   title?: string;
-  sectionEyebrow?: string;
-  sectionTitle?: string;
   intro?: SanityBlock[];
   items?: SanityContactItem[];
 }

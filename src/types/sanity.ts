@@ -1,5 +1,3 @@
-import type { SanityImageSource } from "@sanity/image-url";
-
 export interface SanitySlug {
   _type?: "slug";
   current: string;
